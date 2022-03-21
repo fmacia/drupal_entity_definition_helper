@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  node:
+    image: node:17-alpine
+    container_name: drupal_entity_helper_node
+    volumes:
+      - ./:/app
+    working_dir: /app
+    user: "1000:1000"
+
+  nginx:
+    image: nginx:alpine
+    container_name: drupal_entity_helper_nginx
+    volumes:
+      - ./:/var/www/html
+      - ./.docker/nginx_site.conf:/etc/nginx/conf.d/nginx_site.conf
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.drupal_entity_helper.entrypoints=https"
+      - "traefik.http.routers.drupal_entity_helper.rule=Host(`dedh.defcomsoftware.com`)"
+    restart: unless-stopped
+    environment:
+      - TZ=Europe/Madrid
+
+networks:
+  default:
+    external:
+      name: nginx-proxy

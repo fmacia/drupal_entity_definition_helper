@@ -1,0 +1,17 @@
+pipeline:
+  build:
+    image: node:17-alpine
+    commands:
+      - npm install
+      - npm run build
+
+  scp_files:
+    image: appleboy/drone-scp
+    host:
+      - defcomsoftware.com
+    user: fmacia
+    key: ${SSH_KEY}
+    target: /var/www/dedh
+    source:
+      - dist
+    secrets: [ ssh_key ]
