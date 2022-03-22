@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, defineComponent } from 'vue'
 import { useStore } from 'vuex'
 import YAML from 'yaml'
 import vTitle from './vTitle.vue'
@@ -7,7 +7,10 @@ import vCard from './vCard.vue'
 import vField from './vField.vue'
 import vGrid from './vGrid.vue'
 import vValue from './vValue.vue'
+import vButton from './vButton.vue'
 import vBundleForm from './vBundleForm.vue'
+
+let dialogState = ref(false)
 
 // Props
 const props = defineProps({
@@ -27,6 +30,11 @@ const cancelEdition = () => {
   edit.value = false
 }
 
+const deleteBundle = () => {
+  store.commit('deleteBundle', props.bundleKey)
+  dialogState.value = false
+}
+
 // Computed
 const isTranslatable = computed(() => props.data.translatable === true ? 'Yes' : 'No')
 const exportValues = computed(() => YAML.stringify({ ...values.value }))
@@ -39,13 +47,14 @@ const exportValues = computed(() => YAML.stringify({ ...values.value }))
     <!-- Action buttons -->
     <div class="text-right underline space-x-4 md:absolute md:right-0 md:top-0">
       <a href="#" @click.prevent="edit = true" v-if="edit === false">📝 Edit</a>
+      <a href="#" @click.prevent="dialogState = true" v-if="edit === false">❌ Delete</a>
       <a href="#" @click.prevent="showExport = true" v-if="edit === false">⬇️ Export</a>
       <a href="#" @click.prevent="cancelEdition" v-if="edit === true">❌ Cancel edition</a>
     </div>
   </div>
 
+  <!-- Bundle data -->
   <vGrid cols-md="2" cols-lg="3">
-    <!-- Bundle data -->
     <vValue :label="'Machine name'" :value="data.name"/>
 
     <vValue :label="'URL Pattern'" :value="data.urlPattern"/>
@@ -55,9 +64,11 @@ const exportValues = computed(() => YAML.stringify({ ...values.value }))
     <vValue :label="'Description'" :value="data.description"/>
   </vGrid>
 
-  <div class="mt-4">
-    <vBundleForm :bundle-key="bundleKey" v-if="edit" v-model="edit"/>
-  </div>
+  <vTitle class="mt-8" type="h4" v-if="edit">Edit content type</vTitle>
+
+  <vCard stacked class="mt-4 space-y-4" v-if="edit">
+    <vBundleForm :bundle-key="bundleKey" v-model="edit"/>
+  </vCard>
 
   <!-- Fields -->
   <div class="mt-4 space-y-4">
@@ -74,4 +85,16 @@ const exportValues = computed(() => YAML.stringify({ ...values.value }))
 
     <highlightjs language="yaml" :code="exportValues"/>
   </div>
+
+  <!-- Confirm deletion dialog -->
+  <GDialog max-width="500px" v-model="dialogState">
+    <div class="text-black text-center">
+      Are you sure?
+    </div>
+
+    <div class="py-4 flex justify-center gap-4">
+      <vButton @click.prevent="deleteBundle">Delete</vButton>
+      <vButton @click.prevent="dialogState = false">Cancel</vButton>
+    </div>
+  </GDialog>
 </template>
