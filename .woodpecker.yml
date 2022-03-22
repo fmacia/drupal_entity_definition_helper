@@ -11,7 +11,7 @@ pipeline:
       - defcomsoftware.com
     user: fmacia
     key: ${SSH_KEY}
-    target: /var/www/dedh
+    target: /var/www/dedh.defcomsoftware.com
     source:
       - dist
     secrets: [ ssh_key ]
