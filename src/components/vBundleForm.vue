@@ -39,35 +39,35 @@ const save = () => {
 </script>
 
 <template>
-  <div>
+  <div class="space-y-8">
     <vGrid cols-md="2" cols-lg="2">
       <label>
         <div>Label:</div>
-        <input class="dark:bg-neutral-700" type="text" v-model="bundle.label" >
+        <input class="dark:bg-transparent" type="text" v-model="bundle.label" >
       </label>
 
       <label>
         <div>Machine name:</div>
-        <input class="dark:bg-neutral-700" type="text" v-model="bundle.name">
+        <input class="dark:bg-transparent" type="text" v-model="bundle.name">
       </label>
 
       <label>
         <div>URL Pattern:</div>
-        <input class="dark:bg-neutral-700" type="text" v-model="bundle.urlPattern">
+        <input class="dark:bg-transparent" type="text" v-model="bundle.urlPattern">
       </label>
 
       <label class="space-x-4">
         <span>Translatable:</span>
-        <input class="dark:bg-neutral-700" type="checkbox" v-model="bundle.translatable">
+        <input class="dark:bg-transparent" type="checkbox" v-model="bundle.translatable">
       </label>
 
       <label>
         <div>Description:</div>
-        <textarea class="dark:bg-neutral-700" v-model="bundle.description"></textarea>
+        <textarea class="dark:bg-transparent" v-model="bundle.description"></textarea>
       </label>
     </vGrid>
 
-    <div class="flex justify-center mt-8">
+    <div class="flex justify-center">
       <vButton @click.prevent="save">Save</vButton>
     </div>
   </div>
