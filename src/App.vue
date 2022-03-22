@@ -40,7 +40,9 @@ const node = computed(() => store.state.node)
       <vBundle :data="bundle" :bundle-key="index"/>
     </vCard>
 
-    <vButton @click.prevent="adding = true" v-if="adding !== true">Add bundle</vButton>
+    <div class="flex justify-center">
+      <vButton @click.prevent="adding = true" v-if="adding !== true">Add bundle</vButton>
+    </div>
 
     <vCard v-if="adding === true">
       <vTitle type="h3">Add content type</vTitle>
