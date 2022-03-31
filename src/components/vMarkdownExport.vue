@@ -45,5 +45,5 @@ const processField = (field) => {
 </script>
 
 <template>
-  <highlightjs :autodetect="false" language="yaml" :code="printData(data)"/>
+  <highlightjs :autodetect="false" language="markdown" :code="printData(data)"/>
 </template>
