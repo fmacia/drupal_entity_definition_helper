@@ -16,7 +16,7 @@ const emit = defineEmits(['update:modelValue'])
 const store = useStore()
 
 let emptyBundle = {
-  name: '',
+  machineName: '',
   label: '',
   description: '',
   urlPattern: '',
@@ -48,7 +48,7 @@ const save = () => {
 
       <label>
         <div>Machine name:</div>
-        <input class="dark:bg-transparent" type="text" v-model="bundle.name">
+        <input class="dark:bg-transparent" type="text" v-model="bundle.machineName">
       </label>
 
       <label>

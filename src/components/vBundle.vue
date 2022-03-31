@@ -55,7 +55,7 @@ const exportValues = computed(() => YAML.stringify({ ...values.value }))
 
   <!-- Bundle data -->
   <vGrid cols-md="2" cols-lg="3">
-    <vValue :label="'Machine name'" :value="data.name"/>
+    <vValue :label="'Machine name'" :value="data.machineName"/>
 
     <vValue :label="'URL Pattern'" :value="data.urlPattern"/>
 

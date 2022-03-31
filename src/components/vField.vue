@@ -12,7 +12,7 @@ const props = defineProps({
     Name: {{ data.label }}
   </div>
   <div>
-    Machine name: {{ data.name }}
+    Machine name: {{ data.machineName }}
   </div>
   <div>
     Description: {{ data.description }}

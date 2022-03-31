@@ -4,14 +4,14 @@ export default createStore({
   state: {
     node: [
       {
-        name: 'page',
+        machineName: 'page',
         label: 'Basic page',
         description: 'A basic page content type',
         urlPattern: '/[node:title]',
         translatable: false,
         fields: [
           {
-            name: 'title',
+            machineName: 'title',
             label: 'Title',
             description: 'The content type title',
             type: 'string',
@@ -19,18 +19,18 @@ export default createStore({
         ],
       },
       {
-        name: 'article',
+        machineName: 'article',
         label: 'Article',
         description: 'An article content type',
         fields: [
           {
-            name: 'title',
+            machineName: 'title',
             label: 'Title',
             description: 'The content type title',
             type: 'string',
           },
           {
-            name: 'body',
+            machineName: 'body',
             label: 'Body',
             description: 'The content type body',
             type: 'long_text',
