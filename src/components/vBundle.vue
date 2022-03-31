@@ -66,11 +66,15 @@ const yamlExport = computed(() => YAML.stringify(props.data))
     <vValue :label="'Description'" :value="data.description"/>
   </vGrid>
 
-  <vTitle class="mt-8" type="h4" v-if="edit">Edit content type</vTitle>
+  <Transition name="fade">
+    <div v-if="edit">
+      <vTitle class="mt-8" type="h4">Edit content type</vTitle>
 
-  <vCard stacked class="mt-4 space-y-4" v-if="edit">
-    <vBundleForm :bundle-key="bundleKey" v-model="edit"/>
-  </vCard>
+      <vCard stacked class="mt-4 space-y-4">
+        <vBundleForm :bundle-key="bundleKey" v-model="edit"/>
+      </vCard>
+    </div>
+  </Transition>
 
   <!-- Fields -->
   <div class="mt-4 space-y-4">
@@ -82,16 +86,18 @@ const yamlExport = computed(() => YAML.stringify(props.data))
   </div>
 
   <!-- Export area -->
-  <div class="mt-4 space-y-4" v-if="showExport === true && edit === false">
-    <vTitle type="h4">YAML export</vTitle>
-    <highlightjs :autodetect="false" language="yaml" :code="yamlExport"/>
+  <Transition name="fade">
+    <div class="mt-4 space-y-4" v-if="showExport === true && edit === false">
+      <vTitle type="h4">YAML export</vTitle>
+      <highlightjs :autodetect="false" language="yaml" :code="yamlExport"/>
 
-    <vTitle type="h4">Markdown export</vTitle>
-    <vMarkdownExport :data="data"/>
+      <vTitle type="h4">Markdown export</vTitle>
+      <vMarkdownExport :data="data"/>
 
-    <vTitle type="h4">HTML Table export</vTitle>
-    <vTableExport :data="data"/>
-  </div>
+      <vTitle type="h4">HTML Table export</vTitle>
+      <vTableExport :data="data"/>
+    </div>
+  </Transition>
 
   <!-- Confirm deletion dialog -->
   <GDialog max-width="500px" v-model="dialogState">

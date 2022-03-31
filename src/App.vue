@@ -44,11 +44,13 @@ const node = computed(() => store.state.node)
       <vButton @click.prevent="adding = true" v-if="adding !== true">Add bundle</vButton>
     </div>
 
-    <vCard v-if="adding === true">
-      <vTitle type="h3">Add content type</vTitle>
+    <Transition name="fade">
+      <vCard v-if="adding === true">
+        <vTitle type="h3">Add content type</vTitle>
 
-      <vBundleForm v-model="adding"/>
-    </vCard>
+        <vBundleForm v-model="adding"/>
+      </vCard>
+    </Transition>
   </div>
 
 </template>
