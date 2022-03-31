@@ -9,6 +9,8 @@ import vGrid from './vGrid.vue'
 import vValue from './vValue.vue'
 import vButton from './vButton.vue'
 import vBundleForm from './vBundleForm.vue'
+import vMarkdownExport from './vMarkdownExport.vue'
+import vTableExport from './vTableExport.vue'
 
 let dialogState = ref(false)
 
@@ -37,7 +39,7 @@ const deleteBundle = () => {
 
 // Computed
 const isTranslatable = computed(() => props.data.translatable === true ? 'Yes' : 'No')
-const exportValues = computed(() => YAML.stringify({ ...values.value }))
+const yamlExport = computed(() => YAML.stringify(props.data))
 </script>
 
 <template>
@@ -82,8 +84,13 @@ const exportValues = computed(() => YAML.stringify({ ...values.value }))
   <!-- Export area -->
   <div class="mt-4 space-y-4" v-if="showExport === true && edit === false">
     <vTitle type="h4">YAML export</vTitle>
+    <highlightjs :autodetect="false" language="yaml" :code="yamlExport"/>
 
-    <highlightjs language="yaml" :code="exportValues"/>
+    <vTitle type="h4">Markdown export</vTitle>
+    <vMarkdownExport :data="data"/>
+
+    <vTitle type="h4">HTML Table export</vTitle>
+    <vTableExport :data="data"/>
   </div>
 
   <!-- Confirm deletion dialog -->
