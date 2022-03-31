@@ -11,6 +11,7 @@
     "@highlightjs/vue-plugin": "^2.1.0",
     "gitart-vue-dialog": "^2.0.3",
     "highlight.js": "^11.5.0",
+    "html-prettify": "^1.0.5",
     "vue": "^3.2.25",
     "vuex": "^4.0.2",
     "yaml": "^1.10.2"
