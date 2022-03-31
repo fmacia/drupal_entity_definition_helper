@@ -2,6 +2,15 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
+    labels: {
+      machineName: 'Machine name',
+      label: 'Label',
+      description: 'Description',
+      urlPattern: 'URL Pattern',
+      translatable: 'Translatable',
+      fields: 'Fields',
+      type: 'Type',
+    },
     node: [
       {
         machineName: 'page',
@@ -66,5 +75,8 @@ export default createStore({
     getField: (state) => (bundleKey, fieldKey) => {
       return state.node[bundleKey].fields[fieldKey]
     },
+    translateLabel: (state) => (label) => {
+      return state.labels[label] || label
+    }
   },
 })
