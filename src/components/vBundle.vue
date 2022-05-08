@@ -11,6 +11,7 @@ import vButton from './vButton.vue'
 import vBundleForm from './vBundleForm.vue'
 import vMarkdownExport from './vMarkdownExport.vue'
 import vTableExport from './vTableExport.vue'
+import vFieldForm from './vFieldForm.vue'
 
 let dialogState = ref(false)
 
@@ -25,6 +26,7 @@ const store = useStore()
 let edit = ref(false)
 let showExport = ref(false)
 let values = ref({ ...props.data })
+const adding = ref(false)
 
 // Methods
 const cancelEdition = () => {
@@ -81,8 +83,20 @@ const yamlExport = computed(() => YAML.stringify(props.data))
     <vTitle type="h4" v-if="data.fields.length">Fields</vTitle>
 
     <vCard stacked v-for="(field, index) in data.fields" :key="index">
-      <vField :data="field" :field-key="index"/>
+      <vField :data="field" :bundle-key="bundleKey" :field-key="index"/>
     </vCard>
+
+    <div class="flex justify-center">
+      <vButton @click.prevent="adding = true" v-if="adding !== true">Add field</vButton>
+    </div>
+
+    <Transition name="fade">
+      <vCard stacked v-if="adding === true">
+        <vTitle type="h5">Add field</vTitle>
+
+        <vFieldForm v-model="adding" :bundle-key="bundleKey"/>
+      </vCard>
+    </Transition>
   </div>
 
   <!-- Export area -->
