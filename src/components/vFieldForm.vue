@@ -1,8 +1,8 @@
 <script setup>
-import { ref, computed } from 'vue'
-import { useStore } from 'vuex'
-import vGrid from './vGrid.vue'
-import vButton from './vButton.vue'
+import { ref, computed } from "vue"
+import { useStore } from "vuex"
+import vGrid from "./vGrid.vue"
+import vButton from "./vButton.vue"
 
 // Props
 const props = defineProps({
@@ -11,32 +11,41 @@ const props = defineProps({
   modelValue: Boolean,
 })
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(["update:modelValue"])
 
 // Data
 const store = useStore()
 
 let emptyField = {
-  machineName: '',
-  label: '',
-  description: '',
+  machineName: "",
+  label: "",
+  description: "",
   required: false,
-  defaultValue: '',
+  defaultValue: "",
   translatable: false,
-  type: '',
+  type: "",
 }
 
-const field = props.bundleKey !== undefined && props.fieldKey !== undefined
-  ? { ...store.state.node[props.bundleKey].fields[props.fieldKey] }
-  : emptyField
+const field =
+  props.bundleKey !== undefined && props.fieldKey !== undefined
+    ? { ...store.state.node[props.bundleKey].fields[props.fieldKey] }
+    : emptyField
 
 // Methods
 const save = () => {
   props.bundleKey !== undefined && props.fieldKey !== undefined
-    ? store.commit('setField', { bundleKey: props.bundleKey, fieldKey: props.fieldKey, field })
-    : store.commit('addField', { bundleKey: props.bundleKey, field })
+    ? store.commit("setField", {
+        bundleKey: props.bundleKey,
+        fieldKey: props.fieldKey,
+        field,
+      })
+    : store.commit("addField", { bundleKey: props.bundleKey, field })
 
-  emit('update:modelValue', false)
+  emit("update:modelValue", false)
+}
+
+const cancel = () => {
+  emit("update:modelValue", false)
 }
 </script>
 
@@ -45,42 +54,62 @@ const save = () => {
     <vGrid cols-md="2" cols-lg="2">
       <label>
         <div>Label:</div>
-        <input class="dark:bg-transparent" type="text" v-model="field.label" >
+        <input
+          class="w-full dark:bg-transparent"
+          type="text"
+          v-model="field.label"
+        />
       </label>
 
       <label>
         <div>Machine name:</div>
-        <input class="dark:bg-transparent" type="text" v-model="field.machineName">
+        <input
+          class="w-full dark:bg-transparent"
+          type="text"
+          v-model="field.machineName"
+        />
       </label>
 
       <label>
         <div>Type:</div>
-        <input class="dark:bg-transparent" type="text" v-model="field.type">
+        <input
+          class="w-full dark:bg-transparent"
+          type="text"
+          v-model="field.type"
+        />
       </label>
 
-      <label class="space-x-4">
-        <span>Required:</span>
-        <input class="dark:bg-transparent" type="checkbox" v-model="field.required">
-      </label>
-
-      <label class="space-x-4">
-        <span>Translatable:</span>
-        <input class="dark:bg-transparent" type="checkbox" v-model="field.translatable">
+      <label class="flex items-center gap-x-4">
+        <input type="checkbox" v-model="field.required" />
+        <span>Required</span>
       </label>
 
       <label>
         <div>Default value:</div>
-        <input class="dark:bg-transparent" type="text" v-model="field.defaultValue">
+        <input
+          class="w-full dark:bg-transparent"
+          type="text"
+          v-model="field.defaultValue"
+        />
       </label>
 
-      <label>
-        <div>Description:</div>
-        <textarea class="dark:bg-transparent" v-model="field.description"></textarea>
+      <label class="flex items-center gap-x-4">
+        <input type="checkbox" v-model="field.translatable" />
+        <span>Translatable</span>
       </label>
     </vGrid>
 
-    <div class="flex justify-center">
+    <label class="block mt-8">
+      <div>Description:</div>
+      <textarea
+        class="w-full dark:bg-transparent"
+        v-model="field.description"
+      ></textarea>
+    </label>
+
+    <div class="flex justify-center gap-x-4">
       <vButton @click.prevent="save">Save</vButton>
+      <vButton variant="outline" @click.prevent="cancel">Cancel</vButton>
     </div>
   </div>
 </template>

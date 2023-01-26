@@ -12,9 +12,7 @@ const props = defineProps({
 
 <template>
   <div v-if="!hideEmpty || value">
-    <span class="font-bold">
-      {{ label }}:
-    </span>
+    <span class="font-bold">{{ label }}:</span>
 
     {{ value }}
   </div>

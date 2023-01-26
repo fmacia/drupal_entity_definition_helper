@@ -1,15 +1,13 @@
 <script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
+import plusIcon from "./assets/plus.svg?component"
 import vCard from './components/vCard.vue'
-import vTitle from './components/vTitle.vue'
-import vGrid from './components/vGrid.vue'
 import vNavbar from './components/vNavbar.vue'
 import vButton from './components/vButton.vue'
 import vBundle from './components/vBundle.vue'
 import vBundleForm from './components/vBundleForm.vue'
+import vTitle from './components/vTitle.vue'
 
 // Data
 const store = useStore()
@@ -25,32 +23,34 @@ const addBundle = () => {
 
 // Computed
 const node = computed(() => store.state.node)
-
 </script>
 
 <template>
-  <vNavbar/>
+  <vNavbar />
 
-  <vTitle type="h1" :border="false">Drupal Entity Definition Helper</vTitle>
+  <main class="container mt-24 mb-8">
+    <div class="space-y-6" v-if="node.length">
+      <vTitle type="h2">Content types</vTitle>
 
-  <div class="space-y-6" v-if="node.length">
-    <vTitle type="h2">Content types</vTitle>
-
-    <vCard v-for="(bundle, index) in node" :key="index">
-      <vBundle :data="bundle" :bundle-key="index"/>
-    </vCard>
-
-    <div class="flex justify-center">
-      <vButton @click.prevent="adding = true" v-if="adding !== true">Add bundle</vButton>
-    </div>
-
-    <Transition name="fade">
-      <vCard v-if="adding === true">
-        <vTitle type="h3">Add content type</vTitle>
-
-        <vBundleForm v-model="adding"/>
+      <vCard v-for="(bundle, index) in node" :key="index">
+        <vBundle :data="bundle" :bundle-key="index" />
       </vCard>
-    </Transition>
-  </div>
+
+      <Transition name="fade">
+        <vCard v-if="adding === true">
+          <vTitle type="h3">Add content type</vTitle>
+
+          <vBundleForm v-model="adding" />
+        </vCard>
+      </Transition>
+
+      <div class="flex justify-center">
+        <vButton class="flex items-center gap-x-2 mx-auto" @click.prevent="adding = true" v-if="!adding">
+          <plusIcon class="h-5 w-5" />
+          <span>Add bundle</span>
+        </vButton>
+      </div>
+    </div>
+  </main>
 
 </template>
