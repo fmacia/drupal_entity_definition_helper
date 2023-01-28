@@ -44,28 +44,30 @@ const cancel = () => {
 </script>
 
 <template>
-  <div class="space-y-8">
+  <form @submit.prevent="save">
     <vGrid cols-md="2" cols-lg="2">
       <label>
-        <div>Label:</div>
+        <div>Label *</div>
         <input
           class="w-full dark:bg-transparent"
           type="text"
           v-model="bundle.label"
+          required
         />
       </label>
 
       <label>
-        <div>Machine name:</div>
+        <div>Machine name *</div>
         <input
           class="w-full dark:bg-transparent"
           type="text"
           v-model="bundle.machineName"
+          required
         />
       </label>
 
       <label>
-        <div>URL Pattern:</div>
+        <div>URL Pattern</div>
         <input
           class="w-full dark:bg-transparent"
           type="text"
@@ -80,16 +82,16 @@ const cancel = () => {
     </vGrid>
 
     <label class="block mt-8">
-      <div>Description:</div>
+      <div>Description</div>
       <textarea
         class="w-full dark:bg-transparent"
         v-model="bundle.description"
       ></textarea>
     </label>
 
-    <div class="flex justify-center gap-x-4">
-      <vButton @click.prevent="save">Save</vButton>
+    <div class="mt-8 flex flex-wrap justify-center gap-4">
+      <vButton variant="submit">Save</vButton>
       <vButton variant="outline" @click.prevent="cancel">Cancel</vButton>
     </div>
-  </div>
+  </form>
 </template>
