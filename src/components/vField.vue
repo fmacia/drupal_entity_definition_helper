@@ -3,9 +3,9 @@ import { ref, computed } from "vue"
 import { useStore } from "vuex"
 import vTitle from "./vTitle.vue"
 import vButton from "./vButton.vue"
-import vCard from "./vCard.vue"
 import vFieldForm from "./vFieldForm.vue"
 import vGrid from "./vGrid.vue"
+import vModal from "./vModal.vue"
 import vValue from "./vValue.vue"
 
 const props = defineProps({
@@ -16,9 +16,9 @@ const props = defineProps({
 
 // Data
 const store = useStore()
-let edit = ref(false)
+let showEdit = ref(false)
 let values = ref({ ...props.data })
-let dialogState = ref(false)
+let showDelete = ref(false)
 
 // Computed
 const isTranslatable = computed(() =>
@@ -27,17 +27,12 @@ const isTranslatable = computed(() =>
 const isRequired = computed(() => (props.data.required === true ? "Yes" : "No"))
 
 // Methods
-const cancelEdition = () => {
-  values.value = { ...props.data }
-  edit.value = false
-}
-
 const deleteField = () => {
   store.commit("deleteField", {
     bundleKey: props.bundleKey,
     fieldKey: props.fieldKey,
   })
-  dialogState.value = false
+  showDelete.value = false
 }
 </script>
 
@@ -46,12 +41,11 @@ const deleteField = () => {
   <div class="relative">
     <div
       class="text-right space-x-4 md:absolute md:right-0 md:top-0"
-      v-if="edit === false"
     >
-      <a href="#" class="group" @click.prevent="edit = true">
+      <a href="#" class="group" @click.prevent="showEdit = true">
         📝 <span class="group-hover:underline">Edit</span>
       </a>
-      <a href="#" class="group" @click.prevent="dialogState = true">
+      <a href="#" class="group" @click.prevent="showDelete = true">
         ❌ <span class="group-hover:underline">Delete</span>
       </a>
     </div>
@@ -70,35 +64,27 @@ const deleteField = () => {
   <vValue class="mt-8" :label="'Description'" :value="data.description" />
 
   <!-- Edit form -->
-  <Transition name="fade">
-    <div v-if="edit">
-      <vTitle class="mt-8" type="h5">Edit field</vTitle>
+  <vModal v-model="showEdit">
+    <vTitle type="h5">Edit field</vTitle>
 
-      <vCard stacked class="mt-4 space-y-4">
-        <vFieldForm
-          :bundle-key="bundleKey"
-          :field-key="fieldKey"
-          v-model="edit"
-        />
-      </vCard>
-    </div>
-  </Transition>
+    <vFieldForm
+      :bundle-key="bundleKey"
+      :field-key="fieldKey"
+      v-model="showEdit"
+    />
+  </vModal>
 
   <!-- Confirm deletion dialog -->
-  <GDialog max-width="500px" v-model="dialogState">
-    <div
-      class="dark:bg-neutral-800 bg-neutral-200 border-2 border-black rounded"
-    >
-      <div class="py-4 text-center">
-        Please confirm you want to delete {{ data.label }}.
-      </div>
-
-      <div class="py-4 flex justify-center gap-4">
-        <vButton variant="danger" @click.prevent="deleteField">Delete</vButton>
-        <vButton variant="outline" @click.prevent="dialogState = false">
-          Cancel
-        </vButton>
-      </div>
+  <vModal v-model="showDelete">
+    <div class="text-center">
+      Please confirm you want to delete {{ data.label }}.
     </div>
-  </GDialog>
+
+    <div class="pt-4 flex justify-center gap-4">
+      <vButton variant="danger" @click.prevent="deleteField">Delete</vButton>
+      <vButton variant="outline" @click.prevent="showDelete = false">
+        Cancel
+      </vButton>
+    </div>
+  </vModal>
 </template>

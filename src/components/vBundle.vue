@@ -3,18 +3,19 @@ import { ref, computed, defineComponent } from "vue"
 import { useStore } from "vuex"
 import YAML from "yaml"
 import plusIcon from "../assets/plus.svg?component"
-import vTitle from "./vTitle.vue"
+import vBundleForm from "./vBundleForm.vue"
+import vButton from "./vButton.vue"
 import vCard from "./vCard.vue"
 import vField from "./vField.vue"
-import vGrid from "./vGrid.vue"
-import vValue from "./vValue.vue"
-import vButton from "./vButton.vue"
-import vBundleForm from "./vBundleForm.vue"
-import vMarkdownExport from "./vMarkdownExport.vue"
-import vTableExport from "./vTableExport.vue"
 import vFieldForm from "./vFieldForm.vue"
+import vGrid from "./vGrid.vue"
+import vMarkdownExport from "./vMarkdownExport.vue"
+import vModal from "./vModal.vue"
+import vTableExport from "./vTableExport.vue"
+import vTitle from "./vTitle.vue"
+import vValue from "./vValue.vue"
 
-let dialogState = ref(false)
+let deleteModal = ref(false)
 
 // Props
 const props = defineProps({
@@ -24,20 +25,14 @@ const props = defineProps({
 
 // Data
 const store = useStore()
-let edit = ref(false)
+let showEdit = ref(false)
 let showExport = ref(false)
-let values = ref({ ...props.data })
-const adding = ref(false)
+const showAddField = ref(false)
 
 // Methods
-const cancelEdition = () => {
-  values.value = { ...props.data }
-  edit.value = false
-}
-
 const deleteBundle = () => {
   store.commit("deleteBundle", props.bundleKey)
-  dialogState.value = false
+  deleteModal.value = false
 }
 
 // Computed
@@ -54,12 +49,11 @@ const yamlExport = computed(() => YAML.stringify(props.data))
     <!-- Action buttons -->
     <div
       class="text-right space-x-4 md:absolute md:right-0 md:top-0"
-      v-if="edit === false"
     >
-      <a href="#" class="group" @click.prevent="edit = true">
+      <a href="#" class="group" @click.prevent="showEdit = true">
         📝 <span class="group-hover:underline">Edit</span>
       </a>
-      <a href="#" class="group" @click.prevent="dialogState = true">
+      <a href="#" class="group" @click.prevent="deleteModal = true">
         ❌ <span class="group-hover:underline">Delete</span>
       </a>
       <a href="#" class="group" @click.prevent="showExport = true">
@@ -79,15 +73,11 @@ const yamlExport = computed(() => YAML.stringify(props.data))
 
   <vValue class="my-8" :label="'Description'" :value="data.description" />
 
-  <Transition name="fade">
-    <div v-if="edit">
-      <vTitle class="mt-8" type="h4">Edit content type</vTitle>
+  <vModal v-model="showEdit">
+    <vTitle class="mb-4" type="h4">Edit content type</vTitle>
 
-      <vCard stacked class="mt-4 space-y-4">
-        <vBundleForm :bundle-key="bundleKey" v-model="edit" />
-      </vCard>
-    </div>
-  </Transition>
+    <vBundleForm :bundle-key="bundleKey" v-model="showEdit" />
+  </vModal>
 
   <!-- Fields -->
   <div class="mt-4 space-y-4">
@@ -99,25 +89,22 @@ const yamlExport = computed(() => YAML.stringify(props.data))
 
     <vButton
       class="flex items-center gap-x-2 mx-auto"
-      @click.prevent="adding = true"
-      v-if="!adding"
+      @click.prevent="showAddField = true"
     >
       <plusIcon class="h-5 w-5" />
       <span>Add field</span>
     </vButton>
 
-    <Transition name="fade">
-      <vCard stacked v-if="adding === true">
-        <vTitle type="h5">Add field</vTitle>
+    <vModal v-model="showAddField">
+      <vTitle type="h5">Add field</vTitle>
 
-        <vFieldForm v-model="adding" :bundle-key="bundleKey" />
-      </vCard>
-    </Transition>
+      <vFieldForm v-model="showAddField" :bundle-key="bundleKey" />
+    </vModal>
   </div>
 
   <!-- Export area -->
   <Transition name="fade">
-    <div class="mt-4 space-y-4" v-if="showExport === true && edit === false">
+    <div class="mt-4 space-y-4" v-if="showExport === true">
       <vTitle type="h4">YAML export</vTitle>
       <highlightjs :autodetect="false" language="yaml" :code="yamlExport" />
 
@@ -130,20 +117,16 @@ const yamlExport = computed(() => YAML.stringify(props.data))
   </Transition>
 
   <!-- Confirm deletion dialog -->
-  <GDialog max-width="500px" v-model="dialogState">
-    <div
-      class="dark:bg-neutral-800 bg-neutral-200 border-2 border-black rounded"
-    >
-      <div class="py-4 text-center">
-        Please confirm you want to delete {{ data.label }}.
-      </div>
-
-      <div class="py-4 flex justify-center gap-4">
-        <vButton variant="danger" @click.prevent="deleteBundle">Delete</vButton>
-        <vButton variant="outline" @click.prevent="dialogState = false">
-          Cancel
-        </vButton>
-      </div>
+  <vModal v-model="deleteModal">
+    <div class="text-center">
+      Please confirm you want to delete {{ data.label }}.
     </div>
-  </GDialog>
+
+    <div class="pt-4 flex justify-center gap-4">
+      <vButton variant="danger" @click.prevent="deleteBundle">Delete</vButton>
+      <vButton variant="outline" @click.prevent="deleteModal = false">
+        Cancel
+      </vButton>
+    </div>
+  </vModal>
 </template>
