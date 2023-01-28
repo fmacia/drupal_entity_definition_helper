@@ -18,10 +18,10 @@ const store = useStore()
 let emptyBundle = {
   machineName: "",
   label: "",
-  description: "",
   urlPattern: "",
   translatable: "",
   fields: [],
+  description: "",
 }
 
 const bundle =
