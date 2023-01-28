@@ -1,7 +1,10 @@
-# Vue 3 + Vite
+# Drupal Entity Definition Helper
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+A tool to help define entities for a Drupal website. Allows to export to YAML, Markdown and HTML table.
 
-## Recommended IDE Setup
+## Quickstart for development
 
-- [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar)
+```
+docker-compose run node npm install
+docker-compose run node npm run dev
+```
