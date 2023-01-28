@@ -131,11 +131,19 @@ const yamlExport = computed(() => YAML.stringify(props.data))
 
   <!-- Confirm deletion dialog -->
   <GDialog max-width="500px" v-model="dialogState">
-    <div class="text-black text-center">Are you sure?</div>
+    <div
+      class="dark:bg-neutral-800 bg-neutral-200 border-2 border-black rounded"
+    >
+      <div class="py-4 text-center">
+        Please confirm you want to delete {{ data.label }}.
+      </div>
 
-    <div class="py-4 flex justify-center gap-4">
-      <vButton @click.prevent="deleteBundle">Delete</vButton>
-      <vButton @click.prevent="dialogState = false">Cancel</vButton>
+      <div class="py-4 flex justify-center gap-4">
+        <vButton variant="danger" @click.prevent="deleteBundle">Delete</vButton>
+        <vButton variant="outline" @click.prevent="dialogState = false">
+          Cancel
+        </vButton>
+      </div>
     </div>
   </GDialog>
 </template>

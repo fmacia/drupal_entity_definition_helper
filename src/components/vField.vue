@@ -86,13 +86,19 @@ const deleteField = () => {
 
   <!-- Confirm deletion dialog -->
   <GDialog max-width="500px" v-model="dialogState">
-    <div class="pt-4 text-black text-center">Are you sure?</div>
+    <div
+      class="dark:bg-neutral-800 bg-neutral-200 border-2 border-black rounded"
+    >
+      <div class="py-4 text-center">
+        Please confirm you want to delete {{ data.label }}.
+      </div>
 
-    <div class="py-4 flex justify-center gap-4">
-      <vButton variant="danger" @click.prevent="deleteField">Delete</vButton>
-      <vButton variant="outline" @click.prevent="dialogState = false"
-        >Cancel</vButton
-      >
+      <div class="py-4 flex justify-center gap-4">
+        <vButton variant="danger" @click.prevent="deleteField">Delete</vButton>
+        <vButton variant="outline" @click.prevent="dialogState = false">
+          Cancel
+        </vButton>
+      </div>
     </div>
   </GDialog>
 </template>
