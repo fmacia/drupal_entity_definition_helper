@@ -12,6 +12,7 @@ export default createStore({
       type: 'Type',
       required: 'Required',
       defaultValue: 'Default Value',
+      cardinality: "Cardinality",
     },
     node: [
       {
@@ -28,6 +29,7 @@ export default createStore({
             required: true,
             defaultValue: '',
             translatable: true,
+            cardinality: 1,
             description: 'The content type title',
           },
         ],
@@ -44,6 +46,7 @@ export default createStore({
             required: true,
             defaultValue: '',
             translatable: true,
+            cardinality: 1,
             description: 'The content type title',
           },
           {
@@ -53,6 +56,7 @@ export default createStore({
             required: false,
             defaultValue: '',
             translatable: true,
+            cardinality: 1,
             description: 'The content type body',
           },
         ],

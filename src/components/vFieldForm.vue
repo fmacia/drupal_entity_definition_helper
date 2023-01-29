@@ -24,6 +24,7 @@ let emptyField = {
   defaultValue: "",
   translatable: false,
   type: "",
+  cardinality: 1,
 }
 
 const field =
@@ -79,6 +80,17 @@ const cancel = () => {
           type="text"
           v-model="field.type"
           required
+        />
+      </label>
+
+      <label>
+        <div>Number of values *</div>
+        <input
+          class="w-full dark:bg-transparent"
+          type="number"
+          v-model="field.cardinality"
+          required
+          min="-1"
         />
       </label>
 

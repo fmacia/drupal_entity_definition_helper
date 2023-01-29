@@ -59,6 +59,7 @@ const deleteField = () => {
     <vValue :label="'Required'" :value="isRequired" />
     <vValue :label="'Default value'" :value="data.defaultValue" />
     <vValue :label="'Translatable'" :value="isTranslatable" />
+    <vValue :label="'Number of values'" :value="data.cardinality" />
   </vGrid>
 
   <vValue class="mt-8" :label="'Description'" :value="data.description" />

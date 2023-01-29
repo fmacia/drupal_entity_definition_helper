@@ -2,7 +2,7 @@
 // Props
 const props = defineProps({
   label: String,
-  value: String,
+  value: String|Number,
   hideEmpty: {
     type: Boolean,
     default: true,
