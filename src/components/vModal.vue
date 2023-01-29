@@ -5,7 +5,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <GDialog max-width="500px" v-model="show">
+  <GDialog max-width="700px" v-model="show">
     <div
       class="p-4 dark:bg-neutral-800 bg-neutral-200 border-2 border-black rounded"
     >

@@ -36,9 +36,7 @@ const deleteBundle = () => {
 }
 
 // Computed
-const isTranslatable = computed(() =>
-  props.data.translatable === true ? "Yes" : "No"
-)
+const isTranslatable = computed(() => (props.data.translatable === true ? "Yes" : "No"))
 const yamlExport = computed(() => YAML.stringify(props.data))
 </script>
 
@@ -47,9 +45,7 @@ const yamlExport = computed(() => YAML.stringify(props.data))
     <vTitle type="h3">{{ data.label }}</vTitle>
 
     <!-- Action buttons -->
-    <div
-      class="text-right space-x-4 md:absolute md:right-0 md:top-0"
-    >
+    <div class="text-right space-x-4 md:absolute md:right-0 md:top-0 mb-4 md:mb-0">
       <a href="#" class="group" @click.prevent="showEdit = true">
         📝 <span class="group-hover:underline">Edit</span>
       </a>
@@ -87,10 +83,7 @@ const yamlExport = computed(() => YAML.stringify(props.data))
       <vField :data="field" :bundle-key="bundleKey" :field-key="index" />
     </vCard>
 
-    <vButton
-      class="flex items-center gap-x-2 mx-auto"
-      @click.prevent="showAddField = true"
-    >
+    <vButton class="flex items-center gap-x-2 mx-auto" @click.prevent="showAddField = true">
       <plusIcon class="h-5 w-5" />
       <span>Add field</span>
     </vButton>
@@ -103,30 +96,28 @@ const yamlExport = computed(() => YAML.stringify(props.data))
   </div>
 
   <!-- Export area -->
-  <Transition name="fade">
-    <div class="mt-4 space-y-4" v-if="showExport === true">
-      <vTitle type="h4">YAML export</vTitle>
-      <highlightjs :autodetect="false" language="yaml" :code="yamlExport" />
+  <vModal v-model="showExport">
+    <vTitle class="mb-4" type="h4">YAML export</vTitle>
+    <highlightjs :autodetect="false" language="yaml" :code="yamlExport" />
 
-      <vTitle type="h4">Markdown export</vTitle>
-      <vMarkdownExport :data="data" />
+    <vTitle class="my-4" type="h4">Markdown export</vTitle>
+    <vMarkdownExport :data="data" />
 
-      <vTitle type="h4">HTML Table export</vTitle>
-      <vTableExport :data="data" />
+    <vTitle class="my-4" type="h4">HTML Table export</vTitle>
+    <vTableExport :data="data" />
+
+    <div class="mt-4 flex justify-center">
+      <vButton variant="outline" @click.prevent="showExport = false">Cancel</vButton>
     </div>
-  </Transition>
+  </vModal>
 
   <!-- Confirm deletion dialog -->
   <vModal v-model="deleteModal">
-    <div class="text-center">
-      Please confirm you want to delete {{ data.label }}.
-    </div>
+    <div class="text-center">Please confirm you want to delete {{ data.label }}.</div>
 
     <div class="pt-4 flex justify-center gap-4">
       <vButton variant="danger" @click.prevent="deleteBundle">Delete</vButton>
-      <vButton variant="outline" @click.prevent="deleteModal = false">
-        Cancel
-      </vButton>
+      <vButton variant="outline" @click.prevent="deleteModal = false">Cancel</vButton>
     </div>
   </vModal>
 </template>

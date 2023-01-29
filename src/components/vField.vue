@@ -40,7 +40,7 @@ const deleteField = () => {
   <!-- Action buttons -->
   <div class="relative">
     <div
-      class="text-right space-x-4 md:absolute md:right-0 md:top-0"
+      class="text-right space-x-4 md:absolute md:right-0 md:top-0 mb-4 md:mb-0"
     >
       <a href="#" class="group" @click.prevent="showEdit = true">
         📝 <span class="group-hover:underline">Edit</span>
