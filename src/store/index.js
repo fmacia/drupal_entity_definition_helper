@@ -82,6 +82,9 @@ export default createStore({
     deleteField (state, { bundleKey, fieldKey }) {
       state.node[bundleKey].fields.splice(fieldKey, 1)
     },
+    import (state, newStructure) {
+      state.node = newStructure
+    },
   },
   getters: {
     getBundle: (state) => (bundleKey) => {

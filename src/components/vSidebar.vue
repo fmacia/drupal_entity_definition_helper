@@ -1,6 +1,8 @@
 <script setup>
 import { ref } from "vue"
 import burgerIcon from "../assets/burger.svg?component"
+import vImportForm from "./vImportForm.vue"
+import vModal from "./vModal.vue"
 import vTitle from "./vTitle.vue"
 
 const props = defineProps({
@@ -11,6 +13,7 @@ const props = defineProps({
 })
 
 const visible = ref(false)
+const showImport = ref(false)
 </script>
 
 <template>
@@ -48,5 +51,17 @@ const visible = ref(false)
         &times;
       </a>
     </div>
+
+    <nav>
+      <ul class="text-lg">
+        <li>
+          <a href="#" class="hover:underline" @click.prevent="visible = false; showImport = true">Import data</a>
+        </li>
+      </ul>
+    </nav>
   </aside>
+
+  <vModal v-model="showImport">
+    <vImportForm v-model="showImport" />
+  </vModal>
 </template>

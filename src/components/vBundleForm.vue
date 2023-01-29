@@ -1,5 +1,4 @@
 <script setup>
-import { ref, computed } from "vue"
 import { useStore } from "vuex"
 import vGrid from "./vGrid.vue"
 import vButton from "./vButton.vue"
