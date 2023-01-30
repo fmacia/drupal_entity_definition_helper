@@ -1,19 +1,18 @@
 <script setup>
-import { ref } from "vue"
+import { ref, computed } from "vue"
+import { useStore } from 'vuex'
 import burgerIcon from "../assets/burger.svg?component"
+import vExport from "./vExport.vue"
 import vImportForm from "./vImportForm.vue"
 import vModal from "./vModal.vue"
 import vTitle from "./vTitle.vue"
 
-const props = defineProps({
-  show: {
-    type: Boolean,
-    default: false,
-  },
-})
-
 const visible = ref(false)
 const showImport = ref(false)
+const showExport = ref(false)
+
+const store = useStore()
+const data = computed(() => store.state.node)
 </script>
 
 <template>
@@ -57,11 +56,18 @@ const showImport = ref(false)
         <li>
           <a href="#" class="hover:underline" @click.prevent="visible = false; showImport = true">Import data</a>
         </li>
+        <li>
+          <a href="#" class="hover:underline" @click.prevent="visible = false; showExport = true">Export all</a>
+        </li>
       </ul>
     </nav>
   </aside>
 
   <vModal v-model="showImport">
     <vImportForm v-model="showImport" />
+  </vModal>
+
+  <vModal v-model="showExport">
+    <vExport :data="data"/>
   </vModal>
 </template>

@@ -14,30 +14,33 @@ const store = useStore()
 
 // Methods
 const processData = (data) => {
-  const fields = data.fields
-  const label = data.label
-  const filteredData = Object.fromEntries(
-    Object.entries(data).filter(
-      ([key, val]) => key != "fields" && key != "label"
+  return data.map((item) => {
+    const fields = item.fields
+    const label = item.label
+    const filteredData = Object.fromEntries(
+      Object.entries(item).filter(
+        ([key, val]) => key != "fields" && key != "label"
+      )
     )
-  )
 
-  let exportData = ["## " + label, ""]
-  // Normal data
-  exportData = exportData.concat(
-    Object.keys(filteredData).map(
-      (key) =>
-        "- **" + store.getters.translateLabel(key) + ":** " + filteredData[key]
+    let exportData = [`## ${label}`, ""]
+    // Normal data
+    exportData = exportData.concat(
+      Object.keys(filteredData).map(
+        (key) =>
+          `- **${store.getters.translateLabel(key)}:** ${filteredData[key]}`
+      )
     )
-  )
-  // Fields
-  exportData.push("")
-  exportData.push("### Fields:")
-  exportData.push("")
-  exportData = exportData.concat(
-    fields.map((value) => processField(value).join("\n"))
-  )
-  return exportData
+    // Fields
+    exportData.push("")
+    exportData.push("### Fields")
+    exportData.push("")
+    exportData = exportData.concat(
+      fields.map((value) => processField(value).join("\n"))
+    )
+    exportData.push("")
+    return exportData.join("\n")
+  }).join("\n")
 }
 
 const processField = (field) => {
@@ -45,18 +48,14 @@ const processField = (field) => {
   const filteredField = Object.fromEntries(
     Object.entries(field).filter(([key, val]) => key != "label")
   )
-  let processedField = ["- **" + label + ":**"]
+  let processedField = [`- **${label}:**`]
   const fieldData = Object.keys(filteredField).map(
-    (key) =>
-      "    - **" +
-      store.getters.translateLabel(key) +
-      ":** " +
-      filteredField[key]
+    (key) => `    - **${store.getters.translateLabel(key)}:** ${filteredField[key]}`
   )
   return processedField.concat(fieldData)
 }
 
-const processedData = computed(() => processData(props.data).join("\n"))
+const processedData = computed(() => processData(props.data))
 </script>
 
 <template>

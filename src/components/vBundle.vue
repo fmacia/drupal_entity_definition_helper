@@ -3,17 +3,14 @@ import { ref, computed, defineComponent } from "vue"
 import { useStore } from "vuex"
 import YAML from "yaml"
 import plusIcon from "../assets/plus.svg?component"
-import copyClipboard from '../helpers/copyClipboard'
 import vBundleForm from "./vBundleForm.vue"
 import vButton from "./vButton.vue"
 import vCard from "./vCard.vue"
+import vExport from "./vExport.vue"
 import vField from "./vField.vue"
 import vFieldForm from "./vFieldForm.vue"
 import vGrid from "./vGrid.vue"
-import vMarkdownExport from "./vMarkdownExport.vue"
 import vModal from "./vModal.vue"
-import vTabs from "./vTabs.vue"
-import vTableExport from "./vTableExport.vue"
 import vTitle from "./vTitle.vue"
 import vValue from "./vValue.vue"
 
@@ -99,23 +96,9 @@ const yamlExport = computed(() => YAML.stringify(props.data))
 
   <!-- Export area -->
   <vModal v-model="showExport">
-    <vTabs :tabList="['YAML', 'Markdown', 'HTML Table']">
-      <template v-slot:tabPanel-1>
-        <highlightjs @click="copyClipboard(yamlExport)" :autodetect="false" language="yaml" :code="yamlExport" />
-
-        <div class="flex justify-center mt-4">
-          <vButton @click="copyClipboard(yamlExport)">
-            Copy code
-          </vButton>
-        </div>
-      </template>
-      <template v-slot:tabPanel-2>
-        <vMarkdownExport :data="data" />
-      </template>
-      <template v-slot:tabPanel-3>
-        <vTableExport :data="data" />
-      </template>
-    </vTabs>
+    <vModal v-model="showExport">
+      <vExport :data="[data]"/>
+    </vModal>
 
     <div class="mt-4 flex justify-center">
       <vButton variant="outline" @click.prevent="showExport = false">Cancel</vButton>
