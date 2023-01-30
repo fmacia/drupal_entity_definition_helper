@@ -15,10 +15,11 @@ const props = defineProps({
 })
 
 const yamlExport = computed(() => YAML.stringify(props.data))
+const jsonExport = computed(() => JSON.stringify(props.data))
 </script>
 
 <template>
-  <vTabs :tabList="['YAML', 'Markdown', 'HTML Table']">
+  <vTabs :tabList="['YAML', 'Markdown', 'HTML Table', 'Json']">
     <template v-slot:tabPanel-1>
       <highlightjs
         @click="copyClipboard(yamlExport)"
@@ -36,6 +37,18 @@ const yamlExport = computed(() => YAML.stringify(props.data))
     </template>
     <template v-slot:tabPanel-3>
       <vTableExport :data="data" />
+    </template>
+    <template v-slot:tabPanel-4>
+      <highlightjs
+        @click="copyClipboard(jsonExport)"
+        :autodetect="false"
+        language="json"
+        :code="jsonExport"
+      />
+
+      <div class="flex justify-center mt-4">
+        <vButton @click="copyClipboard(jsonExport)"> Copy code </vButton>
+      </div>
     </template>
   </vTabs>
 
