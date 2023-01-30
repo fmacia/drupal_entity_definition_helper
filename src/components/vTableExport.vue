@@ -1,6 +1,9 @@
 <script setup>
+import { computed } from 'vue'
 import { useStore } from "vuex"
 import prettify from "html-prettify"
+import copyClipboard from '../helpers/copyClipboard'
+import vButton from "./vButton.vue"
 
 // Props
 const props = defineProps({
@@ -11,7 +14,7 @@ const props = defineProps({
 const store = useStore()
 
 // Methods
-const printData = (data) => {
+const processData = (data) => {
   data = JSON.parse(JSON.stringify(data))
   const keys = Object.keys(data)
   const keysWithoutFields = keys.filter((key) => key !== "fields")
@@ -62,8 +65,16 @@ const printData = (data) => {
   content += "</tbody>\n</table>"
   return prettify(content)
 }
+
+const processedData = computed(() => processData(props.data))
 </script>
 
 <template>
-  <highlightjs :autodetect="false" language="html" :code="printData(data)" />
+  <highlightjs :autodetect="false" language="html" :code="processData(data)" />
+
+  <div class="flex justify-center mt-4">
+    <vButton @click="copyClipboard(processedData)">
+      Copy code
+    </vButton>
+  </div>
 </template>

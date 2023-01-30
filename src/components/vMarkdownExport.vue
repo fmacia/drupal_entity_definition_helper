@@ -1,5 +1,8 @@
 <script setup>
+import { computed } from 'vue'
 import { useStore } from "vuex"
+import copyClipboard from '../helpers/copyClipboard'
+import vButton from "./vButton.vue"
 
 // Props
 const props = defineProps({
@@ -10,12 +13,6 @@ const props = defineProps({
 const store = useStore()
 
 // Methods
-const printData = (data, indent = "") => {
-  data = JSON.parse(JSON.stringify(data))
-
-  return processData(data).join("\n")
-}
-
 const processData = (data) => {
   const fields = data.fields
   const label = data.label
@@ -58,12 +55,20 @@ const processField = (field) => {
   )
   return processedField.concat(fieldData)
 }
+
+const processedData = computed(() => processData(props.data).join("\n"))
 </script>
 
 <template>
   <highlightjs
     :autodetect="false"
     language="markdown"
-    :code="printData(data)"
+    :code="processedData"
   />
+
+  <div class="flex justify-center mt-4">
+    <vButton @click="copyClipboard(processedData)">
+      Copy code
+    </vButton>
+  </div>
 </template>
