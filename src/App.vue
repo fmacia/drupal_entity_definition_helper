@@ -6,6 +6,7 @@ import vBundle from './components/vBundle.vue'
 import vBundleForm from './components/vBundleForm.vue'
 import vButton from './components/vButton.vue'
 import vCard from './components/vCard.vue'
+import vFooter from './components/vFooter.vue'
 import vModal from './components/vModal.vue'
 import vNavbar from './components/vNavbar.vue'
 import vTitle from './components/vTitle.vue'
@@ -51,5 +52,7 @@ const node = computed(() => store.state.node)
       </div>
     </div>
   </main>
+
+  <vFooter />
 
 </template>
