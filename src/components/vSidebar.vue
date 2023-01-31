@@ -52,7 +52,7 @@ const data = computed(() => store.state.node)
     </div>
 
     <nav>
-      <ul class="text-lg">
+      <ul class="text-lg space-y-4">
         <li>
           <a href="#" class="hover:underline" @click.prevent="visible = false; showImport = true">Import data</a>
         </li>

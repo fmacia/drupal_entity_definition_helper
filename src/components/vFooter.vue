@@ -4,12 +4,12 @@ const title = encodeURI(document.title)
 </script>
 
 <template>
-  <footer class="bg-[#101010] p-4 flex justify-between">
+  <footer class="bg-[#101010] p-4 sm:flex  text-center sm:text-start justify-between">
     <a class="underline" href="https://github.com/fmacia" target="_blank">
       Made by fmacia (Github link)
     </a>
 
-    <div class="flex gap-2">
+    <div class="mt-6 sm:mt-0 sm:flex sm:gap-2">
       <span> Share: </span>
 
       <div class="space-x-2">

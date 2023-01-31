@@ -20,13 +20,11 @@ const activeTab = ref(0)
 
 <template>
   <div :class="{ 'flex': variant === 'vertical' }">
-    <ul :class="{'flex flex-wrap sm:flex-nowrap gap-y-2 mb-6': variant === 'horizontal' }">
-      <li class="w-full text-center" v-for="(tab, index) in tabList" :key="index">
-        <a href="#" class="block w-full" :class="{ 'border-sky-700 border-b-2': index === activeTab }" @click.prevent="activeTab = index">
-          {{ tab }}
-        </a>
-      </li>
-    </ul>
+    <div class="text-center overflow-auto whitespace-nowrap">
+      <a href="#" class="inline-block text-center px-6 py-2 mb-6" v-for="(tab, index) in tabList" :key="index" :class="{ 'border-sky-700 border-b-2': index === activeTab }" @click.prevent="activeTab = index">
+        {{ tab }}
+      </a>
+    </div>
 
     <template v-for="(tab, index) in tabList">
       <div :key="index" v-if="index === activeTab">
