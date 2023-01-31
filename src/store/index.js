@@ -14,6 +14,25 @@ export default createStore({
       defaultValue: 'Default Value',
       cardinality: "Cardinality",
     },
+    schema: {
+      node: {
+        machineName: true,
+        label: true,
+        urlPattern: false,
+        translatable: false,
+        description: false,
+        fields: {
+          machineName: true,
+          label: true,
+          type: true,
+          cardinality: true,
+          required: false,
+          defaultValue: false,
+          translatable: false,
+          description: false,
+        },
+      },
+    },
     node: [
       {
         machineName: 'page',

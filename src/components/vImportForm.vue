@@ -31,71 +31,49 @@ const save = () => {
     return
   }
 
-  if (!validateBundles(parsedValues)) {
+  if (!validate(parsedValues, store.state.schema.node)) {
     return
   }
 
   value.value = ""
-  store.commit("import", newBundles(parsedValues))
+  store.commit("import", hydrate(parsedValues, store.state.schema.node))
   emit("update:modelValue", false)
 }
 
-const validateBundles = (parsedValues) => {
-  Object.keys(parsedValues).forEach((key) => {
-    if (!parsedValues[key]["label"] || null) {
-      errors.value.push(`Label missing in bundle ${key}`)
-    }
-    if (!parsedValues[key]["machineName"] || null) {
-      errors.value.push(`Machine name missing in bundle ${key}`)
-    }
+const validate = (parsedValues, schema, bundleKey = null) => {
+  for (let [key, value] of Object.entries(parsedValues)) {
+    for (let [requiredKey, requiredValue] of Object.entries(schema)) {
+      if (requiredKey == 'fields') {
+        validate(value[requiredKey], schema.fields, key)
+        continue
+      } else if (!requiredValue || value[requiredKey]) {
+        continue
+      }
 
-    Object.keys(parsedValues[key]["fields"]).forEach((fieldKey) => {
-      if (!parsedValues[key]["fields"][fieldKey]["label"] || null) {
-        errors.value.push(`Label missing in bundle ${key}, field ${fieldKey}`)
-      }
-      if (!parsedValues[key]["fields"][fieldKey]["machineName"] || null) {
-        errors.value.push(`Machine name missing in bundle ${key}, field ${fieldKey}`)
-      }
-      if (!parsedValues[key]["fields"][fieldKey]["type"] || null) {
-        errors.value.push(`Type missing in bundle ${key}, field ${fieldKey}`)
-      }
-      if (!parsedValues[key]["fields"][fieldKey]["cardinality"] || null) {
-        errors.value.push(`Number of values name missing in bundle ${key}, field ${fieldKey}`)
-      }
-    })
-  })
+      bundleKey
+        ? errors.value.push(`${store.getters.translateLabel(requiredKey)} missing in bundle ${parseInt(bundleKey) + 1}, field ${parseInt(key) + 1}`)
+        : errors.value.push(`${store.getters.translateLabel(requiredKey)} missing in bundle ${parseInt(key) + 1}`)
+    }
+  }
 
   return !errors.value.length
 }
 
-const newBundles = (parsedValues) => {
-  let bundles = []
-  Object.keys(parsedValues).forEach((key) => {
-    let fields = []
-    Object.keys(parsedValues[key]["fields"]).forEach((fieldKey) => {
-      fields.push({
-        machineName: parsedValues[key]["fields"][fieldKey]["machineName"],
-        label: parsedValues[key]["fields"][fieldKey]["label"],
-        type: parsedValues[key]["fields"][fieldKey]["type"],
-        required: parsedValues[key]["fields"][fieldKey]["required"] || false,
-        defaultValue: parsedValues[key]["fields"][fieldKey]["defaultValue"] | "",
-        translatable: parsedValues[key]["fields"][fieldKey]["translatable"] || false,
-        cardinality: parsedValues[key]["fields"][fieldKey]["cardinality"] || 1,
-        description: parsedValues[key]["fields"][fieldKey]["description"] || "",
-      })
-    })
+const hydrate = (parsedValues, schema, bundleKey = null) => {
+  let newValues = []
+  for (let [key, value] of Object.entries(parsedValues)) {
+    newValues.push({})
+    for (let [schemaKey, schemaValue] of Object.entries(schema)) {
+      if (schemaKey == 'fields') {
+        newValues[key][schemaKey] = hydrate(value[schemaKey], schema.fields, key)
+        continue
+      }
 
-    bundles.push({
-      machineName: parsedValues[key]["machineName"],
-      label: parsedValues[key]["label"],
-      urlPattern: parsedValues[key]["urlPattern"] || "",
-      translatable: parsedValues[key]["translatable"] || false,
-      description: parsedValues[key]["description"] || "",
-      fields: fields,
-    })
-  })
+      newValues[key][schemaKey] = value[schemaKey]
+    }
+  }
 
-  return bundles
+  return newValues
 }
 
 const cancel = () => {
@@ -120,7 +98,7 @@ const cancel = () => {
 
       <div class="mt-8" v-if="errors.length">⚠️ <span class="underline">Errors:</span></div>
       <ol class="list-decimal list-inside">
-        <li v-for="(error, index) in errors" :key="index">{{ error }}</li>
+        <li class="pl-4" v-for="(error, index) in errors" :key="index">{{ error }}</li>
       </ol>
     </label>
 
